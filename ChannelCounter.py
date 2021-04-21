@@ -24,7 +24,7 @@ class ChannelCounter(commands.Cog):
                 k, j, p, ch, g, sz, xd = Counter.count_swearings(self.counter, message=content)
                 if k | j | p | ch | g | sz | xd:
                     database.add_stats_to_user(guild=ctx.guild.id, author_id=message.author.id, k=k, j=j, p=p, ch=ch,
-                                               g=g, sz=sz)
+                                               g=g, sz=sz, xd=xd)
         print("I'm done!")
 
 
