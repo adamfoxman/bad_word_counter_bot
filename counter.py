@@ -1,3 +1,6 @@
+import string
+
+
 class Counter:
     k_array = ['kurw', 'kurew']
     j_array = ['jeb']
@@ -5,11 +8,13 @@ class Counter:
     ch_array = ['huj']
     g_array = ['gówn', 'gown']
     sz_array = ['szmat', 'szmaci']
+    xd_array = ['xd']
 
     def count_particular_swearing(self, swearings, message):
         counted_swearings = 0
+        lowered_message = message.lower()
         for swearing in swearings:
-            counted_swearings += message.count(swearing)
+            counted_swearings += lowered_message.count(swearing)
         return counted_swearings
 
     def count_swearings(self, message):
@@ -19,4 +24,5 @@ class Counter:
         ch = self.count_particular_swearing(self, self.ch_array, message)
         g = self.count_particular_swearing(self, self.g_array, message)
         sz = self.count_particular_swearing(self, self.sz_array, message)
-        return k, j, p, ch, g, sz
+        xd = self.count_particular_swearing(self, self.xd_array, message)
+        return k, j, p, ch, g, sz, xd

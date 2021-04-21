@@ -31,26 +31,20 @@ class Database(metaclass=DatabaseMeta):
             'p': 0,
             'ch': 0,
             'g': 0,
-            'sz': 0
+            'sz': 0,
+            'xd': 0
         })
 
     def set_user_nick(self, author_id: str, author_nick: str):
         self.database.update({'nick': author_nick}, where('author') == author_id)
 
-    def add_stats_to_user(self, guild: str, author_id: str, k: int, j: int, p: int, ch: int, g: int, sz: int):
+    def add_stats_to_user(self, guild: str, author_id: str, k: int, j: int, p: int, ch: int, g: int, sz: int, xd: int):
         self.database.update_multiple([
             (add('k', k), where('author') == author_id),
             (add('j', j), where('author') == author_id),
             (add('p', p), where('author') == author_id),
             (add('ch', ch), where('author') == author_id),
             (add('g', g), where('author') == author_id),
-            (add('sz', sz), where('author') == author_id)
+            (add('sz', sz), where('author') == author_id),
+            (add('xd', xd), where('author') == author_id)
         ])
-        # guild_table.update(add('k', k), where('author') == author_id)
-        # guild_table.update(add('j', j), where('author') == author_id)
-        # guild_table.update(add('p', p), where('author') == author_id)
-        # guild_table.update(add('ch', ch), where('author') == author_id)
-        # guild_table.update(add('g', g), where('author') == author_id)
-        # guild_table.update(add('sz', sz), where('author') == author_id)
-
-
