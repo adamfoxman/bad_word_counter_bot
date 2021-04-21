@@ -1,6 +1,7 @@
 from discord.ext import commands
 from counter import Counter
 from main import database
+from tqdm.asyncio import tqdm
 
 
 class ChannelCounter(commands.Cog):
@@ -18,10 +19,12 @@ class ChannelCounter(commands.Cog):
     async def count_here(self, ctx):
         for channel in ctx.guild.text_channels:
             print("Now in " + channel.name)
-            async for message in channel.history(limit=100000):
+            async for message in tqdm(channel.history(limit=100000)):
                 content = message.content
                 k, j, p, ch, g, sz = Counter.count_swearings(self.counter, message=content)
-                database.add_stats_to_user(guild=ctx.guild.id, author_id=message.author.id, k=k, j=j, p=p, ch=ch, g=g, sz=sz)
+                if k | j | p | ch | g | sz:
+                    database.add_stats_to_user(guild=ctx.guild.id, author_id=message.author.id, k=k, j=j, p=p, ch=ch,
+                                               g=g, sz=sz)
         print("I'm done!")
 
 
