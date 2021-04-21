@@ -24,4 +24,3 @@ async def on_ready():
 
 
 bot.run(token)
-Application.run()
