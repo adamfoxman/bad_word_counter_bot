@@ -3,7 +3,8 @@ import os
 from dotenv import load_dotenv
 from discord.ext import commands
 from counter import Counter
-from database import Database
+from tinydb_database import TinyDBDatabase
+from mongo_database import MongoDatabase
 
 load_dotenv()
 token = os.getenv("BOT_TOKEN")
@@ -12,7 +13,8 @@ intents = discord.Intents.default()
 intents.members = True
 
 bot = commands.Bot(command_prefix='kur!', description='Bot liczący wulgarność studentów PB', intents=intents)
-database: Database = Database("database.json")
+tinydb_database: TinyDBDatabase = TinyDBDatabase("database.json")
+mongo_database: MongoDatabase = MongoDatabase(os.getenv("MONGODB_URL"))
 bot.load_extension('ChannelCounter')
 
 @bot.event

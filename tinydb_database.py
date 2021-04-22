@@ -4,7 +4,7 @@ from threading import Thread, Lock
 from tinydb.operations import add
 
 
-class DatabaseMeta(type):
+class TinyDBDatabaseMeta(type):
     _instances = {}
     _lock: Lock = Lock()
 
@@ -16,14 +16,16 @@ class DatabaseMeta(type):
         return cls._instances[cls]
 
 
-class Database(metaclass=DatabaseMeta):
+class TinyDBDatabase(metaclass=TinyDBDatabaseMeta):
     database: TinyDB = None
 
     def __init__(self, json_file: str) -> None:
         self.database = TinyDB(json_file)
+        self.database.insert({"please": "Just work."})
 
-    def add_user(self, author_id: str):
-        self.database.insert({
+    def add_user(self, guild: str, author_id: str):
+        table = self.database.table(guild)
+        table.insert({
             'author': author_id,
             'nick': '',
             'k': 0,
@@ -35,11 +37,13 @@ class Database(metaclass=DatabaseMeta):
             'xd': 0
         })
 
-    def set_user_nick(self, author_id: str, author_nick: str):
-        self.database.update({'nick': author_nick}, where('author') == author_id)
+    def set_user_nick(self, guild: str,author_id: str, author_nick: str):
+        table = self.database.table(guild)
+        table.update({'nick': author_nick}, where('author') == author_id)
 
     def add_stats_to_user(self, guild: str, author_id: str, k: int, j: int, p: int, ch: int, g: int, sz: int, xd: int):
-        self.database.update_multiple([
+        table = self.database.table(guild)
+        table.update_multiple([
             (add('k', k), where('author') == author_id),
             (add('j', j), where('author') == author_id),
             (add('p', p), where('author') == author_id),
@@ -48,3 +52,6 @@ class Database(metaclass=DatabaseMeta):
             (add('sz', sz), where('author') == author_id),
             (add('xd', xd), where('author') == author_id)
         ])
+
+    def drop_server_table(self, guild: str):
+        self.database.drop_table(guild)
